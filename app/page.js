@@ -1,17 +1,47 @@
 "use client"
-import React, { useLayoutEffect, useState } from 'react'
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react'
+
+const NAV_SECTIONS = [
+  { href: '#work', label: 'Intro' },
+  { href: '#skills', label: 'Technical Skills' },
+  { href: '#projects', label: 'Featured Projects' },
+  { href: '#experience', label: 'Experience' },
+  { href: '#education', label: 'Education' },
+  { href: '#certifications', label: 'Certifications' },
+  { href: '#contact', label: 'Get In Touch' },
+];
 
 export default function Page() {
   const [expandedExp, setExpandedExp] = useState(null);
   const [showResumeModal, setShowResumeModal] = useState(false);
+  const [navMenuOpen, setNavMenuOpen] = useState(false);
+  const navMenuRef = useRef(null);
   const sectionTitle = 'text-2xl font-bold text-white drop-shadow-[0_1px_4px_rgba(0,0,0,0.45)]';
+  const navLinkBtn =
+    'inline-flex items-center justify-center rounded-lg border border-[#3a4550] bg-[#0f1418] px-5 py-2 text-sm font-medium text-[#eee] transition hover:border-[#22d3ee] hover:bg-[#22d3ee] hover:text-black';
+
+  useEffect(() => {
+    function handlePointerDown(e) {
+      if (!navMenuOpen || !navMenuRef.current) return;
+      if (!navMenuRef.current.contains(e.target)) setNavMenuOpen(false);
+    }
+    function handleKey(e) {
+      if (e.key === 'Escape') setNavMenuOpen(false);
+    }
+    document.addEventListener('mousedown', handlePointerDown);
+    document.addEventListener('keydown', handleKey);
+    return () => {
+      document.removeEventListener('mousedown', handlePointerDown);
+      document.removeEventListener('keydown', handleKey);
+    };
+  }, [navMenuOpen]);
 
   useLayoutEffect(()=>{
     const canvas = document.getElementById('nnCanvas');
     if(!canvas) return;
     const ctx = canvas.getContext('2d');
     let W = 0; let H = 0;
-    const NODE_COUNT = 180;
+    const NODE_COUNT = 150;
     const MAX_DIST = 160;
     const SPEED_MULT = 0.4;
     const PULSE_SPAWN_FRAMES = 18;
@@ -197,12 +227,44 @@ export default function Page() {
 
       {/* Fixed Nav */}
       <nav className="fixed top-0 left-0 right-0 z-50 border-b border-[#1a1a1a] bg-[#06080c]">
-        <div className="max-w-5xl mx-auto px-6 py-3 flex items-center justify-between">
-          <div className="text-white font-bold">MC</div>
-          <div className="flex items-center gap-6">
-            {['Skills','Experience'].map((l)=> (
-              <a key={l} href={`#${l.toLowerCase()}`} className="text-[#555] hover:text-cyan-400 transition">{l}</a>
-            ))}
+        <div className="flex w-full items-center justify-between px-4 py-3 sm:px-6 lg:px-10">
+          <a href="#work" className="font-display text-lg font-bold tracking-tight text-white transition hover:text-cyan-400">
+            MC
+          </a>
+          <div ref={navMenuRef} className="group relative">
+            <button
+              type="button"
+              className="rounded-md p-2 text-[#aaa] outline-none transition hover:bg-white/5 hover:text-cyan-400 focus-visible:ring-2 focus-visible:ring-cyan-500/50"
+              aria-expanded={navMenuOpen}
+              aria-haspopup="true"
+              aria-label="Page sections menu"
+              onClick={() => setNavMenuOpen((o) => !o)}
+            >
+              <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" aria-hidden>
+                <path strokeLinecap="round" d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+            </button>
+            <div
+              className={[
+                'absolute right-0 top-full z-[60] mt-2 min-w-[min(100vw-2rem,16rem)] rounded-lg border border-[#2a2a2a] bg-[#06080c] py-2 shadow-xl',
+                navMenuOpen ? 'max-md:block max-md:visible max-md:opacity-100' : 'max-md:hidden',
+                'md:block md:invisible md:pointer-events-none md:opacity-0 md:transition md:duration-150 md:group-hover:pointer-events-auto md:group-hover:visible md:group-hover:opacity-100',
+              ].join(' ')}
+              role="menu"
+              aria-label="Jump to section"
+            >
+              {NAV_SECTIONS.map((item) => (
+                <a
+                  key={item.href}
+                  href={item.href}
+                  role="menuitem"
+                  className="block px-4 py-2.5 text-sm text-[#ccc] transition hover:bg-white/5 hover:text-cyan-400"
+                  onClick={() => setNavMenuOpen(false)}
+                >
+                  {item.label}
+                </a>
+              ))}
+            </div>
           </div>
         </div>
       </nav>
@@ -210,7 +272,7 @@ export default function Page() {
       {/* HERO — light glass panel so the neural net stays visible behind */}
       <section id="work" className="relative z-10 flex min-h-screen items-center justify-center overflow-hidden">
         <div className="relative z-10 mx-auto max-w-5xl px-6 text-center">
-          <div className="rounded-2xl border border-[#22d3ee]/25 bg-[rgba(8,12,16,0.38)] px-8 py-12 shadow-[0_4px_28px_rgba(0,0,0,0.22)]">
+          <div className="rounded-2xl border border-[#22d3ee]/25 bg-[rgba(11,15,18,0.48)] px-8 py-12 shadow-[0_4px_28px_rgba(0,0,0,0.22)]">
             <div className="mb-4">
               <div className="text-xs tracking-widest text-[#22d3ee] drop-shadow-[0_1px_3px_rgba(0,0,0,0.75)]">SOFTWARE ENGINEER &amp; AI DEVELOPER</div>
             </div>
@@ -219,9 +281,9 @@ export default function Page() {
             <p className="mt-4 text-sm tracking-wide text-[#e8e8e8] drop-shadow-[0_1px_6px_rgba(0,0,0,0.55)]">M.S. Software Engineering · Oil &amp; Gas · AI &amp; Automation</p>
 
             <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
-              <a href="#projects" className="rounded-full bg-[#22d3ee] px-5 py-2 font-medium text-black shadow-sm transition hover:bg-cyan-300">Projects</a>
-              <a href="/resume.pdf" target="_blank" rel="noreferrer" className="rounded-full border border-[#3a4550] bg-[#0f1418] px-5 py-2 text-[#eee] transition hover:border-cyan-500/50 hover:bg-[#141a20]">Resume</a>
-              <a href="#contact" className="rounded-full bg-[#22d3ee] px-5 py-2 font-medium text-black shadow-sm transition hover:bg-cyan-300">Get In Touch</a>
+              <a href="#projects" className={navLinkBtn}>Projects</a>
+              <a href="/resume.pdf" target="_blank" rel="noreferrer" className={navLinkBtn}>Resume</a>
+              <a href="#contact" className={navLinkBtn}>Get In Touch</a>
             </div>
 
             <div className="mt-12">
@@ -277,14 +339,14 @@ export default function Page() {
         </div>
       </section>
 
-      <section id="projects" className="relative z-10 bg-[rgba(13,13,13,0.45)] py-24 px-6">
+      <section id="projects" className="relative z-10 py-24 px-6">
         <div className="max-w-5xl mx-auto">
           <h2 className={sectionTitle}>Featured Projects</h2>
           <p className="mt-2 text-[#999]">Featured projects and selected work.</p>
 
           <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
             {featuredProjects.map((p) => (
-              <div key={p.title} className="bg-[#0c0c0c] border border-[#2a2a2a] hover:border-cyan-500/40 transition rounded-lg p-6 shadow-[0_4px_24px_rgba(0,0,0,0.45)]">
+              <div key={p.title} className="rounded-lg border border-[#2a2a2a] bg-[rgba(12,12,12,0.62)] p-6 shadow-[0_4px_24px_rgba(0,0,0,0.28)] transition hover:border-cyan-500/40">
                 <h3 className="text-lg font-bold text-[#22d3ee]">{p.title}</h3>
                 <p className="mt-2 text-[#c4c4c4]">{p.desc}</p>
                 <div className="mt-4 flex flex-wrap gap-2">
@@ -303,7 +365,7 @@ export default function Page() {
             <h4 className="text-sm font-bold text-white">Other Projects</h4>
             <div className="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-4">
               {udemyProjects.map(p=> (
-                <div key={p.title} className="bg-[#0c0c0c] border border-[#2a2a2a] hover:border-cyan-500/40 transition rounded-lg p-4 text-sm shadow-[0_4px_20px_rgba(0,0,0,0.4)]">
+                <div key={p.title} className="rounded-lg border border-[#2a2a2a] bg-[rgba(12,12,12,0.62)] p-4 text-sm shadow-[0_4px_20px_rgba(0,0,0,0.25)] transition hover:border-cyan-500/40">
                   <strong className="font-bold text-[#22d3ee]">{p.title}</strong>
                   <p className="mt-1 text-[#999]">{p.desc}</p>
                 </div>
@@ -313,7 +375,7 @@ export default function Page() {
         </div>
       </section>
 
-      <section id="experience" className="relative z-10 bg-[rgba(13,13,13,0.45)] py-24 px-6">
+      <section id="experience" className="relative z-10 py-24 px-6">
         <div className="max-w-5xl mx-auto">
           <h2 className={sectionTitle}>Experience</h2>
           <div className="mt-8 space-y-8">
@@ -323,7 +385,7 @@ export default function Page() {
                   <div className="mt-1 h-3 w-3 rounded-full bg-cyan-400 transition group-hover:scale-125" />
                   <div className="mt-2 w-px flex-1 bg-[#2a2a2a]" />
                 </div>
-                <div className="flex-1 rounded-xl border border-[#2a2a2a] bg-[rgba(12,12,12,0.95)] p-4 shadow-[0_4px_24px_rgba(0,0,0,0.35)]">
+                <div className="flex-1 rounded-xl border border-[#2a2a2a] bg-[rgba(12,12,12,0.62)] p-4 shadow-[0_4px_24px_rgba(0,0,0,0.25)]">
                   <div className="flex items-center justify-between">
                     <h4 className="font-bold text-[#22d3ee] transition group-hover:text-cyan-300">{e.role}</h4>
                     <span className="text-sm text-[#999]">{e.date}</span>
@@ -332,7 +394,7 @@ export default function Page() {
                     {e.points.map((p,pi)=>(<li key={pi}>{p}</li>))}
                   </ul>
                   {expandedExp === i && e.details && e.details.length > 0 && (
-                    <div className="mt-4 p-4 bg-[#0c0c0c] border border-[#2a2a2a] rounded-lg text-sm text-[#ddd] shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
+                    <div className="mt-4 rounded-lg border border-[#2a2a2a] bg-[rgba(12,12,12,0.56)] p-4 text-sm text-[#ddd] shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
                       <p className="font-semibold text-cyan-400 mb-3">Full Details:</p>
                       <ul className="space-y-2 text-[#999]">
                         {e.details.map((d,di)=>(
@@ -374,12 +436,12 @@ export default function Page() {
         </div>
       )}
 
-      <section id="education" className="relative z-10 bg-[rgba(13,13,13,0.45)] py-24 px-6">
+      <section id="education" className="relative z-10 py-24 px-6">
         <div className="max-w-5xl mx-auto">
           <h2 className={sectionTitle}>Education</h2>
           <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
             {education.map((ed,idx)=>(
-              <div key={idx} className="bg-[#0c0c0c] border border-[#2a2a2a] hover:border-cyan-500/40 transition rounded-lg p-6 shadow-[0_4px_24px_rgba(0,0,0,0.45)]">
+              <div key={idx} className="rounded-lg border border-[#2a2a2a] bg-[rgba(12,12,12,0.62)] p-6 shadow-[0_4px_24px_rgba(0,0,0,0.28)] transition hover:border-cyan-500/40">
                 <h3 className="font-bold text-[#22d3ee]">{ed.title}</h3>
                 <p className="mt-1 text-[#999]">{ed.school}</p>
                 <p className="mt-2 text-[#999]">{ed.note}</p>
@@ -389,12 +451,12 @@ export default function Page() {
         </div>
       </section>
 
-      <section id="certifications" className="relative z-10 bg-[rgba(13,13,13,0.45)] py-20 px-6">
+      <section id="certifications" className="relative z-10 py-20 px-6">
         <div className="max-w-5xl mx-auto">
           <h2 className={sectionTitle}>Certifications</h2>
           <div className="mt-4 flex flex-wrap gap-4">
             {certifications.map(c=> (
-              <div key={c.title} className="bg-[#0c0c0c] border border-[#2a2a2a] hover:border-cyan-500/40 transition rounded-lg p-4 text-sm shadow-[0_4px_20px_rgba(0,0,0,0.4)]">
+              <div key={c.title} className="rounded-lg border border-[#2a2a2a] bg-[rgba(12,12,12,0.62)] p-4 text-sm shadow-[0_4px_20px_rgba(0,0,0,0.25)] transition hover:border-cyan-500/40">
                 <div className="font-bold text-[#22d3ee]">{c.title}</div>
                 <div className="text-sm text-[#999]">{c.date}</div>
               </div>
@@ -403,15 +465,15 @@ export default function Page() {
         </div>
       </section>
 
-      <section id="contact" className="relative z-10 bg-[rgba(13,13,13,0.45)] py-24 px-6">
+      <section id="contact" className="relative z-10 py-24 px-6">
         <div className="max-w-5xl mx-auto text-center">
           <h2 className={sectionTitle}>Get In Touch</h2>
           <p className="mt-2 text-[#999]">Reach out by email, phone, or connect on LinkedIn and GitHub.</p>
-          <div className="mt-6 flex items-center justify-center gap-4">
-            <a href="mailto:michaelrchavez@sbcglobal.net" className="px-4 py-2 bg-[#22d3ee] text-black rounded-md font-medium hover:bg-cyan-300 transition">Email</a>
-            <a href="tel:+13612055119" className="px-4 py-2 bg-[#0f1418] border border-[#3a4550] text-[#eee] rounded-md hover:bg-[#141a20] hover:border-cyan-500/50 transition">Phone</a>
-            <a href="https://linkedin.com/in/michaelrchavez31/" target="_blank" rel="noreferrer" className="px-4 py-2 bg-[#0f1418] border border-[#3a4550] text-[#eee] rounded-md hover:bg-[#141a20] hover:border-cyan-500/50 transition">LinkedIn</a>
-            <a href="https://github.com/Mchavez31" target="_blank" rel="noreferrer" className="px-4 py-2 bg-[#0f1418] border border-[#3a4550] text-[#eee] rounded-md hover:bg-[#141a20] hover:border-cyan-500/50 transition">GitHub</a>
+          <div className="mt-6 flex flex-wrap items-center justify-center gap-4">
+            <a href="mailto:michaelrchavez@sbcglobal.net" className={navLinkBtn}>Email</a>
+            <a href="tel:+13612055119" className={navLinkBtn}>Phone</a>
+            <a href="https://linkedin.com/in/michaelrchavez31/" target="_blank" rel="noreferrer" className={navLinkBtn}>LinkedIn</a>
+            <a href="https://github.com/Mchavez31" target="_blank" rel="noreferrer" className={navLinkBtn}>GitHub</a>
           </div>
         </div>
       </section>
