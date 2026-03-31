@@ -3,23 +3,25 @@ import NeuralNetworkCanvas from "@/app/components/NeuralNetworkCanvas";
 import {
   RESUME_PDF_PATH,
   certifications,
-  education,
-  experience,
+  professionalSummary,
   profile,
   resumeContact,
-  skillGroups,
+  resumeEducation,
+  resumeExperience,
+  resumeHeaderContact,
+  resumeProjectBullets,
+  resumeSkillBullets,
 } from "@/lib/resume-data";
 
 export const metadata = {
   title: "Resume | Michael Chavez",
   description:
-    "Professional resume — experience, education, skills, and certifications. View as PDF or on the web.",
+    "Professional resume — summary, skills, projects, education, experience, and certifications. View as PDF or on the web.",
 };
 
 const sectionHeading =
   "font-display text-lg font-bold tracking-tight text-white border-b border-white/[0.12] pb-2";
 
-/** Same section order as the portfolio (skills → experience → education → certifications). */
 const bodyText = "text-[#d0d4d8]";
 const mutedText = "text-[#9ca3af]";
 const panelBlock =
@@ -43,14 +45,14 @@ export default function ResumePage() {
                 href={RESUME_PDF_PATH}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center rounded-lg border border-[#3a4550] bg-[#0f1418] px-4 py-2 text-sm font-medium text-[#eee] transition hover:border-[#22d3ee] hover:bg-[#22d3ee] hover:text-black"
+                className="neuron-spark-hover inline-flex items-center justify-center rounded-lg border border-[#3a4550] bg-[#0f1418] px-4 py-2 text-sm font-medium text-[#eee] transition hover:border-[#22d3ee] hover:bg-[#22d3ee] hover:text-black"
               >
                 View PDF
               </a>
               <a
                 href={RESUME_PDF_PATH}
                 download="Michael-Chavez-Resume.pdf"
-                className="inline-flex items-center justify-center rounded-lg border border-[#22d3ee]/50 bg-[#22d3ee]/10 px-4 py-2 text-sm font-semibold text-[#22d3ee] transition hover:bg-[#22d3ee]/20"
+                className="neuron-spark-hover inline-flex items-center justify-center rounded-lg border border-[#22d3ee]/50 bg-[#22d3ee]/10 px-4 py-2 text-sm font-semibold text-[#22d3ee] transition hover:bg-[#22d3ee]/20"
               >
                 Download PDF
               </a>
@@ -66,23 +68,22 @@ export default function ResumePage() {
               <h1 className="font-display text-4xl font-bold tracking-tight text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.45)] sm:text-5xl">
                 {profile.name}
               </h1>
-              <p className="mt-2 text-sm font-semibold uppercase tracking-[0.22em] text-[#22d3ee]">
-                {profile.headline}
-              </p>
-              <p className={`mt-2 text-sm ${mutedText}`}>{profile.tagline}</p>
-              <div className="mt-6 flex flex-wrap gap-x-5 gap-y-2 text-sm text-[#e2e4e8]">
+              <p className="mt-4 text-sm text-[#e2e4e8]">
                 <a
                   className="hover:text-[#22d3ee]"
                   href={`mailto:${resumeContact.email}`}
                 >
                   {resumeContact.email}
                 </a>
+                <span className="text-[#5c6470]"> | </span>
                 <a
                   className="hover:text-[#22d3ee]"
                   href={`tel:${resumeContact.phoneTel}`}
                 >
-                  {resumeContact.phoneDisplay}
+                  {resumeHeaderContact.phoneDisplay}
                 </a>
+              </p>
+              <p className="mt-2 text-sm text-[#e2e4e8]">
                 <a
                   className="hover:text-[#22d3ee]"
                   href={resumeContact.linkedin}
@@ -91,6 +92,7 @@ export default function ResumePage() {
                 >
                   LinkedIn
                 </a>
+                <span className="text-[#5c6470]"> | </span>
                 <a
                   className="hover:text-[#22d3ee]"
                   href={resumeContact.github}
@@ -99,56 +101,38 @@ export default function ResumePage() {
                 >
                   GitHub
                 </a>
-              </div>
+              </p>
             </div>
 
             <div className="space-y-12 px-6 py-10 sm:px-10 sm:py-12">
-              {/* Order matches portfolio: Technical Skills → Experience → Education → Certifications */}
               <section>
-                <h2 className={sectionHeading}>Technical skills</h2>
-                <div className="mt-6 space-y-5">
-                  {skillGroups.map((group) => (
-                    <div key={group.title} className={panelBlock}>
-                      <h3 className="text-xs font-semibold uppercase tracking-[0.18em] text-[#22d3ee]">
-                        {group.title}
-                      </h3>
-                      <p className={`mt-2 text-sm leading-relaxed ${bodyText}`}>
-                        {group.items.join(" · ")}
-                      </p>
-                    </div>
-                  ))}
-                </div>
+                <h2 className={sectionHeading}>Professional Summary</h2>
+                <p className={`mt-6 text-sm leading-relaxed ${bodyText}`}>
+                  {professionalSummary}
+                </p>
               </section>
 
               <section>
-                <h2 className={sectionHeading}>Professional experience</h2>
-                <ul className="mt-6 space-y-8">
-                  {experience.map((job) => (
-                    <li key={job.role} className={panelBlock}>
-                      <div className="flex flex-col gap-1 sm:flex-row sm:items-start sm:justify-between">
-                        <h3 className="text-base font-bold leading-snug text-white">
-                          {job.role}
-                        </h3>
-                        <span className="shrink-0 text-xs font-medium uppercase tracking-wider text-[#94a3b8]">
-                          {job.date}
-                        </span>
-                      </div>
-                      <ul
-                        className={`mt-3 list-inside list-disc space-y-1.5 text-sm leading-relaxed ${bodyText}`}
-                      >
-                        {job.points.map((p) => (
-                          <li key={p}>{p}</li>
-                        ))}
-                      </ul>
-                      {job.details?.length > 0 && (
-                        <ul
-                          className={`mt-4 list-disc space-y-2 border-t border-white/[0.06] pt-4 pl-5 text-sm leading-relaxed marker:text-[#22d3ee]/80 ${mutedText}`}
-                        >
-                          {job.details.map((d, di) => (
-                            <li key={di}>{d}</li>
-                          ))}
-                        </ul>
-                      )}
+                <h2 className={sectionHeading}>Skills</h2>
+                <ul
+                  className={`mt-6 list-inside list-disc space-y-2 text-sm leading-relaxed ${bodyText}`}
+                >
+                  {resumeSkillBullets.map((line) => (
+                    <li key={line} className="pl-1 marker:text-cyan-400/80">
+                      {line}
+                    </li>
+                  ))}
+                </ul>
+              </section>
+
+              <section>
+                <h2 className={sectionHeading}>Software Projects</h2>
+                <ul
+                  className={`mt-6 list-inside list-disc space-y-3 text-sm leading-relaxed ${bodyText}`}
+                >
+                  {resumeProjectBullets.map((line) => (
+                    <li key={line} className="pl-1 marker:text-cyan-400/80">
+                      {line}
                     </li>
                   ))}
                 </ul>
@@ -156,24 +140,71 @@ export default function ResumePage() {
 
               <section>
                 <h2 className={sectionHeading}>Education</h2>
-                <ul className="mt-6 space-y-5">
-                  {education.map((ed) => (
-                    <li
-                      key={`${ed.title}-${ed.school}`}
-                      className={panelBlock}
-                    >
-                      <h3 className="text-base font-bold text-white">
-                        {ed.title}
-                      </h3>
-                      <p className={`mt-1 text-sm ${bodyText}`}>{ed.school}</p>
-                      <p className={`mt-1 text-sm ${mutedText}`}>{ed.note}</p>
+                <ul className="mt-6 space-y-6">
+                  {resumeEducation.map((ed) => (
+                    <li key={`${ed.school}-${ed.degree}`} className={panelBlock}>
+                      <p className="text-base font-bold text-white">
+                        {ed.school} - {ed.location}
+                      </p>
+                      <p className={`mt-1 text-sm ${bodyText}`}>{ed.degree}</p>
+                      <p className={`mt-1 text-xs font-medium uppercase tracking-wider ${mutedText}`}>
+                        {ed.dates}
+                      </p>
+                      <ul
+                        className={`mt-3 list-inside list-disc space-y-1.5 text-sm ${bodyText}`}
+                      >
+                        {ed.bullets.map((b) => (
+                          <li key={b}>{b}</li>
+                        ))}
+                      </ul>
                     </li>
                   ))}
                 </ul>
               </section>
 
               <section>
-                <h2 className={sectionHeading}>Certifications</h2>
+                <h2 className={sectionHeading}>Experience</h2>
+                <ul className="mt-6 space-y-8">
+                  {resumeExperience.map((job, idx) => (
+                    <li
+                      key={`${job.company}-${job.date}-${idx}`}
+                      className={panelBlock}
+                    >
+                      <div className="flex flex-col gap-1 sm:flex-row sm:items-start sm:justify-between">
+                        <div>
+                          <p className="text-base font-bold text-white">
+                            {job.company} - {job.location}
+                          </p>
+                          <p className={`mt-1 text-xs font-medium uppercase tracking-wider ${mutedText}`}>
+                            {job.date}
+                          </p>
+                          {job.project ? (
+                            <p className={`mt-2 text-sm font-semibold text-[#22d3ee]/90`}>
+                              {job.project} – {job.role}
+                            </p>
+                          ) : (
+                            <p className={`mt-2 text-sm font-semibold text-[#22d3ee]/90`}>
+                              {job.role}
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                      <ul
+                        className={`mt-4 list-disc space-y-2 pl-5 text-sm leading-relaxed marker:text-cyan-400/70 ${bodyText}`}
+                      >
+                        {job.bullets.map((b) => (
+                          <li key={b}>{b}</li>
+                        ))}
+                      </ul>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+
+              <section>
+                <h2 className={sectionHeading}>
+                  Certifications & Professional Development
+                </h2>
                 <ul className="mt-6 space-y-3">
                   {certifications.map((c) => (
                     <li

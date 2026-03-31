@@ -7,6 +7,7 @@ import {
   certifications,
   education,
   experience,
+  featuredProjects,
   skillGroups,
 } from '@/lib/resume-data'
 
@@ -28,7 +29,7 @@ export default function Page() {
   const sectionTitle =
     'font-display text-2xl font-bold tracking-tight text-white drop-shadow-[0_1px_4px_rgba(0,0,0,0.45)]';
   const navLinkBtn =
-    'inline-flex items-center justify-center rounded-lg border border-[#3a4550] bg-[#0f1418] px-5 py-2 text-sm font-medium text-[#eee] transition hover:border-[#22d3ee] hover:bg-[#22d3ee] hover:text-black';
+    'neuron-spark-hover inline-flex items-center justify-center rounded-lg border border-[#3a4550] bg-[#0f1418] px-5 py-2 text-sm font-medium text-[#eee] transition hover:border-[#22d3ee] hover:bg-[#22d3ee] hover:text-black';
 
   useEffect(() => {
     function handlePointerDown(e) {
@@ -46,38 +47,14 @@ export default function Page() {
     };
   }, [navMenuOpen]);
 
-  const featuredProjects = [
-    {
-      title: 'Calorie Tracking Web App',
-      desc: 'Full stack application for logging daily meals and tracking macros with user input validation and dynamic calorie summaries.',
-      tech: ['HTML','CSS','JavaScript','Node.js'],
-      github: 'https://mchavez31.github.io/CaloriEat/'
-    },
-    {
-      title: "AI Career Impact Prediction",
-      desc: "Analyzed 32,000-93,000 record datasets to predict AI's impact on employment using PCA, clustering, decision trees, and feature engineering.",
-      tech: ['R','Machine Learning','EDA','Data Cleaning']
-    },
-    {
-      title: 'Restaurant Finder Web App',
-      desc: 'Location-based app for searching and filtering restaurants by cuisine and rating.',
-      tech: ['HTML','CSS','JavaScript','Angular']
-    },
-    {
-      title: 'My Portfolio Website',
-      desc: 'Personal portfolio built with Next.js and Tailwind CSS, deployed on Vercel.',
-      tech: ['Next.js','Tailwind CSS','React']
-    }
-  ]
-
   const currentlyBuilding = [
     {
       title: 'This Portfolio',
-      desc: 'Building a full-stack portfolio with Next.js, React, and Tailwind CSS — learning component architecture, routing, and modern frontend development along the way.'
+      desc: 'Building a full-stack portfolio with Next.js, React, and Tailwind CSS while learning component architecture, routing, and modern frontend development along the way.'
     },
     {
       title: 'AI Agent Development',
-      desc: 'Exploring AI agent frameworks and automation workflows — focused on how intelligent tooling can be applied to real engineering and business problems.'
+      desc: 'Exploring AI agent frameworks and automation workflows, focused on how intelligent tooling can be applied to real engineering and business problems.'
     },
     {
       title: 'Engineering AI Automation',
@@ -85,7 +62,7 @@ export default function Page() {
     },
     {
       title: 'Full Stack Development',
-      desc: 'Completing a full-stack web development course and applying those skills to real projects — strengthening fundamentals in JavaScript, Node.js, and modern frameworks.'
+      desc: 'Completing a full-stack web development course and applying those skills to real projects, strengthening fundamentals in JavaScript, Node.js, and modern frameworks.'
     }
   ]
 
@@ -111,7 +88,7 @@ export default function Page() {
           <div ref={navMenuRef} className="group relative">
             <button
               type="button"
-              className="rounded-md p-2 text-[#aaa] outline-none transition hover:bg-white/5 hover:text-cyan-400 focus-visible:ring-2 focus-visible:ring-cyan-500/50"
+              className="neuron-spark-hover rounded-md p-2 text-[#aaa] outline-none transition hover:bg-white/5 hover:text-cyan-400 focus-visible:ring-2 focus-visible:ring-cyan-500/50"
               aria-expanded={navMenuOpen}
               aria-haspopup="true"
               aria-label="Page sections menu"
@@ -174,17 +151,55 @@ export default function Page() {
 
       <section id="about" className="relative z-10 scroll-mt-20 py-24 px-6">
         <div className="mx-auto w-full max-w-5xl">
-          <h2 className={`${sectionTitle} text-center`}>About</h2>
-          <p className="mt-2 text-center text-sm leading-relaxed text-[#a8a8a8]">
-            A quick snapshot of who I am and what I focus on.
-          </p>
-          <div className={`mt-8 max-w-5xl space-y-4 p-6 sm:p-8 ${surfaceCard}`}>
-            <div className="text-xl leading-none text-cyan-400/75">"</div>
-            {aboutParagraphs.map((text, i) => (
-              <div key={i} className={`border-l-2 border-cyan-400/50 p-4 ${nestedPanel}`}>
-                <p className="text-sm leading-relaxed text-[#c8c8c8]">{text}</p>
+          <h2 className="font-display text-2xl font-bold tracking-tight text-white drop-shadow-[0_1px_4px_rgba(0,0,0,0.45)]">
+            About Me
+          </h2>
+          <div className="mt-8 grid grid-cols-1 gap-8 lg:grid-cols-3">
+            <div className="lg:col-span-2">
+              <div className="space-y-5 rounded-xl border border-[#2a2a2a]/90 border-l-4 border-l-cyan-400/40 bg-[rgba(8,8,10,0.63)] p-8 shadow-[0_4px_32px_rgba(0,0,0,0.25)]">
+                {aboutParagraphs.map((text, i) => (
+                  <p key={i} className="text-sm leading-relaxed text-[#c8c8c8]">
+                    {text}
+                  </p>
+                ))}
               </div>
-            ))}
+            </div>
+
+            <div className="flex flex-col gap-4">
+              <div className="rounded-xl border border-[#2a2a2a]/90 bg-[rgba(8,8,10,0.63)] p-6 shadow-[0_4px_32px_rgba(0,0,0,0.25)]">
+                <div className="mb-4 text-xs font-semibold uppercase tracking-[0.2em] text-cyan-400">
+                  Quick Facts
+                </div>
+                <ul className="space-y-3 text-sm text-[#c8c8c8]">
+                  <li className="flex gap-2">
+                    <span className="flex-shrink-0 text-cyan-400">→</span>
+                    <span>M.S. Software Engineering — GPA 3.93</span>
+                  </li>
+                  <li className="flex gap-2">
+                    <span className="flex-shrink-0 text-cyan-400">→</span>
+                    <span>10+ years O&G engineering</span>
+                  </li>
+                  <li className="flex gap-2">
+                    <span className="flex-shrink-0 text-cyan-400">→</span>
+                    <span>Full-stack & AI development</span>
+                  </li>
+                  <li className="flex gap-2">
+                    <span className="flex-shrink-0 text-cyan-400">→</span>
+                    <span>Python · React · Next.js</span>
+                  </li>
+                </ul>
+              </div>
+
+              <div className="rounded-xl border border-[#2a2a2a]/90 bg-[rgba(8,8,10,0.63)] p-6 shadow-[0_4px_32px_rgba(0,0,0,0.25)]">
+                <div className="mb-4 text-xs font-semibold uppercase tracking-[0.2em] text-cyan-400">
+                  Based In
+                </div>
+                <p className="text-sm text-[#c8c8c8]">Houston, TX</p>
+                <p className="mt-1 text-xs text-[#888]">
+                  Available for New Opportunities
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -256,7 +271,7 @@ export default function Page() {
                     href={p.github}
                     target="_blank"
                     rel="noreferrer"
-                    className="mt-5 inline-block rounded-md bg-[#22d3ee] px-3 py-2 text-xs font-semibold text-black shadow-sm transition hover:bg-cyan-300"
+                    className="neuron-spark-hover mt-5 inline-block rounded-md bg-[#22d3ee] px-3 py-2 text-xs font-semibold text-black shadow-sm transition hover:bg-cyan-300"
                   >
                     View on GitHub →
                   </a>
@@ -346,7 +361,9 @@ export default function Page() {
       <section id="contact" className="relative z-10 scroll-mt-20 py-24 px-6">
         <div className="mx-auto w-full max-w-5xl text-center">
           <h2 className={sectionTitle}>Get In Touch</h2>
-          <p className="mt-2 text-[#999]">Reach out by email, phone, or connect on LinkedIn and GitHub.</p>
+          <p className="mx-auto mt-2 max-w-2xl text-sm leading-relaxed text-[#a8a8a8]">
+            I believe the best products come from bold ideas and strong collaboration. If you're ready to build something that matters, I'm ready to help make it real.
+          </p>
           <div className="mt-6 flex flex-wrap items-center justify-center gap-4">
             <a href="mailto:michaelrchavez@sbcglobal.net" className={navLinkBtn}>Email</a>
             <a href="tel:+13612055119" className={navLinkBtn}>Phone</a>

@@ -13,7 +13,6 @@ export default function NeuralNetworkCanvas() {
 
     let W = 0;
     let H = 0;
-    const NODE_COUNT = 120;
     const MAX_DIST = 160;
     const SPEED_MULT = 0.1;
     const PULSE_SPAWN_FRAMES = 18;
@@ -173,6 +172,7 @@ export default function NeuralNetworkCanvas() {
       raf = requestAnimationFrame(step);
     }
 
+    const NODE_COUNT = window.innerWidth < 768 ? 45 : 120;
     init();
     step();
 

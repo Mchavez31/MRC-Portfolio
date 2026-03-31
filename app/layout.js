@@ -1,6 +1,7 @@
 import { DM_Sans, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import BootIntro from "@/app/components/BootIntro";
+import CustomCursor from "@/app/components/CustomCursor";
 
 const dmSans = DM_Sans({
   variable: "--font-dm-sans",
@@ -26,6 +27,7 @@ export default function RootLayout({ children }) {
     >
       <body className={`${dmSans.className} min-h-full flex flex-col`}>
         <BootIntro />
+        <CustomCursor />
         {children}
       </body>
     </html>
