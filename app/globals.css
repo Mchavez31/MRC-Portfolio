@@ -25,11 +25,7 @@ body {
   font-family: var(--font-dm-sans), ui-sans-serif, system-ui, sans-serif;
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
+/* Space Grotesk on hero h1; section h2s use `font-display` in page. Other headings inherit DM Sans. */
+h1 {
   font-family: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
 }

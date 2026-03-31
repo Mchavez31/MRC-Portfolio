@@ -1,5 +1,6 @@
 import { DM_Sans, Space_Grotesk } from "next/font/google";
 import "./globals.css";
+import BootIntro from "@/app/components/BootIntro";
 
 const dmSans = DM_Sans({
   variable: "--font-dm-sans",
@@ -24,6 +25,7 @@ export default function RootLayout({ children }) {
       className={`${dmSans.variable} ${spaceGrotesk.variable} h-full antialiased`}
     >
       <body className={`${dmSans.className} min-h-full flex flex-col`}>
+        <BootIntro />
         {children}
       </body>
     </html>
