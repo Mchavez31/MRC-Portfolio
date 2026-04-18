@@ -1,8 +1,11 @@
 "use client"
 import React, { useEffect, useRef, useState } from 'react'
 import NeuralNetworkCanvas from '@/app/components/NeuralNetworkCanvas'
+import ContactForm from '@/app/components/ContactForm'
+import GitHubStats from '@/app/components/GitHubStats'
 import Link from 'next/link'
 import {
+  RESUME_PDF_PATH,
   aboutParagraphs,
   certifications,
   education,
@@ -25,6 +28,7 @@ const NAV_SECTIONS = [
 export default function Page() {
   const [expandedExp, setExpandedExp] = useState(null);
   const [navMenuOpen, setNavMenuOpen] = useState(false);
+  const [highlightedSkill, setHighlightedSkill] = useState(null);
   const navMenuRef = useRef(null);
   const sectionTitle =
     'font-display text-2xl font-bold tracking-tight text-white drop-shadow-[0_1px_4px_rgba(0,0,0,0.45)]';
@@ -50,19 +54,25 @@ export default function Page() {
   const currentlyBuilding = [
     {
       title: 'This Portfolio',
-      desc: 'Building a full-stack portfolio with Next.js, React, and Tailwind CSS while learning component architecture, routing, and modern frontend development along the way.'
+      desc: 'Building a full-stack portfolio with Next.js, React, and Tailwind CSS while learning component architecture, routing, and modern frontend development along the way.',
+      usedSkills: ['Next.js', 'React', 'JavaScript', 'Tailwind CSS', 'HTML', 'CSS'],
+      github: 'https://github.com/Mchavez31/MRC-Portfolio'
     },
     {
       title: 'AI Agent Development',
-      desc: 'Exploring AI agent frameworks and automation workflows, focused on how intelligent tooling can be applied to real engineering and business problems.'
+      desc: 'Exploring AI agent frameworks and automation workflows, focused on how intelligent tooling can be applied to real engineering and business problems.',
+      usedSkills: ['Python', 'Machine Learning'] // Assuming Python-based AI tools
     },
     {
-      title: 'Engineering AI Automation',
-      desc: 'Investigating how LLMs and AI agents can be applied to technical document review, tag validation, and data workflows common in large-scale engineering projects.'
+      title: 'Systemize - Engineering AI Automation',
+      desc: 'Python application for systemizing engineering drawings, tracking data, comparing revision changes, and generating automated reports. Applying LLMs and AI agents to technical document review, tag validation, and data workflows common in large-scale engineering projects.',
+      usedSkills: ['Python', 'Machine Learning'],
+      github: 'https://github.com/Mchavez31/Systemize'
     },
     {
       title: 'Full Stack Development',
-      desc: 'Completing a full-stack web development course and applying those skills to real projects, strengthening fundamentals in JavaScript, Node.js, and modern frameworks.'
+      desc: 'Completing a full-stack web development course and applying those skills to real projects, strengthening fundamentals in JavaScript, Node.js, and modern frameworks.',
+      usedSkills: ['JavaScript', 'Node.js', 'React', 'HTML', 'CSS']
     }
   ]
 
@@ -74,6 +84,63 @@ export default function Page() {
 
   const nestedPanel =
     'rounded-lg border border-[#2a2a2a]/80 bg-[rgba(6,6,8,0.54)] shadow-[inset_0_1px_0_rgba(255,255,255,0.03)]'
+
+  // Handle skill click: scroll to projects and highlight matching ones
+  const handleSkillClick = (skillName) => {
+    setHighlightedSkill(skillName)
+    
+    // Check if any "Currently Building" items use this skill
+    const hasBuildingMatch = currentlyBuilding.some(item => 
+      item.usedSkills?.some(skill => 
+        skill.toLowerCase().includes(skillName.toLowerCase()) ||
+        skillName.toLowerCase().includes(skill.toLowerCase())
+      )
+    )
+    
+    // Check if any projects use this skill
+    const hasProjectMatch = featuredProjects.some(project => 
+      project.usedSkills?.some(skill => 
+        skill.toLowerCase().includes(skillName.toLowerCase()) ||
+        skillName.toLowerCase().includes(skill.toLowerCase())
+      )
+    )
+    
+    // Scroll to the first section with matches
+    if (hasBuildingMatch) {
+      const buildingSection = document.getElementById('currently-building')
+      if (buildingSection) {
+        buildingSection.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      }
+    } else if (hasProjectMatch) {
+      const projectsSection = document.getElementById('projects')
+      if (projectsSection) {
+        projectsSection.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      }
+    }
+    
+    // Clear highlight after 5 seconds
+    setTimeout(() => {
+      setHighlightedSkill(null)
+    }, 5000)
+  }
+
+  // Check if a project uses the highlighted skill
+  const projectUsesSkill = (project) => {
+    if (!highlightedSkill) return false
+    return project.usedSkills?.some(skill => 
+      skill.toLowerCase().includes(highlightedSkill.toLowerCase()) ||
+      highlightedSkill.toLowerCase().includes(skill.toLowerCase())
+    )
+  }
+
+  // Check if a "Currently Building" item uses the highlighted skill
+  const currentlyBuildingUsesSkill = (item) => {
+    if (!highlightedSkill) return false
+    return item.usedSkills?.some(skill => 
+      skill.toLowerCase().includes(highlightedSkill.toLowerCase()) ||
+      highlightedSkill.toLowerCase().includes(skill.toLowerCase())
+    )
+  }
 
   return (
     <main className="relative min-h-screen bg-transparent font-sans text-[#999] antialiased">
@@ -126,6 +193,16 @@ export default function Page() {
       {/* HERO — light glass panel so the neural net stays visible behind */}
       <section id="work" className="relative z-10 flex min-h-screen scroll-mt-20 items-center justify-center overflow-hidden">
         <div className="relative z-10 mx-auto max-w-5xl px-6 text-center">
+          {/* Availability Banner */}
+          <div className="mb-8 animate-fade-in">
+            <div className="inline-flex items-center gap-3 rounded-full border border-emerald-400/30 bg-emerald-500/10 px-6 py-3 shadow-lg backdrop-blur-sm">
+              <div className="h-2.5 w-2.5 animate-pulse rounded-full bg-emerald-400"></div>
+              <span className="text-sm font-semibold text-emerald-300">
+                Actively seeking Software Engineering roles · Available for interviews
+              </span>
+            </div>
+          </div>
+
           <div className="rounded-2xl border border-[#22d3ee]/25 bg-[rgba(11,15,18,0.48)] px-8 py-12 shadow-[0_4px_28px_rgba(0,0,0,0.22)]">
             <div className="mb-4">
               <div className="text-xs tracking-widest text-[#22d3ee] drop-shadow-[0_1px_3px_rgba(0,0,0,0.75)]">SOFTWARE ENGINEER &amp; AI DEVELOPER</div>
@@ -162,6 +239,19 @@ export default function Page() {
                     {text}
                   </p>
                 ))}
+                
+                <div className="pt-4 border-t border-white/[0.06]">
+                  <a 
+                    href={RESUME_PDF_PATH}
+                    download="Michael-Chavez-Resume.pdf"
+                    className="neuron-spark-hover inline-flex items-center justify-center gap-2 rounded-lg border border-[#22d3ee]/50 bg-[#22d3ee]/10 px-5 py-2.5 text-sm font-semibold text-[#22d3ee] transition hover:bg-[#22d3ee]/20"
+                  >
+                    <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                    Download Resume
+                  </a>
+                </div>
               </div>
             </div>
 
@@ -199,6 +289,8 @@ export default function Page() {
                   Available for New Opportunities
                 </p>
               </div>
+
+              <GitHubStats />
             </div>
           </div>
         </div>
@@ -211,14 +303,55 @@ export default function Page() {
             What I am actively working on and learning right now.
           </p>
           <div className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-2">
-            {currentlyBuilding.map((item) => (
-              <div key={item.title} className={`flex h-full flex-col p-6 ${surfaceCard}`}>
-                <h3 className="border-b border-white/[0.06] pb-3 text-base font-bold leading-snug text-[#22d3ee]">
-                  {item.title}
-                </h3>
-                <p className="mt-4 text-sm leading-relaxed text-[#a8a8a8]">{item.desc}</p>
-              </div>
-            ))}
+            {currentlyBuilding.map((item) => {
+              const isHighlighted = currentlyBuildingUsesSkill(item)
+              const isFiltered = highlightedSkill && !isHighlighted
+              
+              return (
+                <div 
+                  key={item.title} 
+                  className={`flex h-full flex-col p-6 ${surfaceCard} ${
+                    isHighlighted ? 'ring-2 ring-cyan-400 border-cyan-400 scale-[1.02]' : ''
+                  } ${
+                    isFiltered ? 'opacity-30' : ''
+                  }`}
+                >
+                  <h3 className="border-b border-white/[0.06] pb-3 text-base font-bold leading-snug text-[#22d3ee]">
+                    {item.title}
+                  </h3>
+                  <p className="mt-4 text-sm leading-relaxed text-[#a8a8a8]">{item.desc}</p>
+                  
+                  {item.usedSkills && item.usedSkills.length > 0 && (
+                    <div className="mt-4 flex flex-wrap gap-2">
+                      {item.usedSkills.map((skill) => (
+                        <span 
+                          key={skill} 
+                          className={`${skillChip} text-xs ${
+                            highlightedSkill && (
+                              skill.toLowerCase().includes(highlightedSkill.toLowerCase()) ||
+                              highlightedSkill.toLowerCase().includes(skill.toLowerCase())
+                            ) ? 'ring-1 ring-cyan-400 bg-cyan-500/20' : ''
+                          }`}
+                        >
+                          {skill}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                  
+                  {item.github && (
+                    <a
+                      href={item.github}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="neuron-spark-hover mt-5 inline-block rounded-md border border-[#22d3ee]/50 bg-[#22d3ee]/10 px-3 py-2 text-xs font-semibold text-[#22d3ee] shadow-sm transition hover:bg-[#22d3ee]/20"
+                    >
+                      View on GitHub →
+                    </a>
+                  )}
+                </div>
+              )
+            })}
           </div>
         </div>
       </section>
@@ -227,6 +360,7 @@ export default function Page() {
       <section id="skills" className="relative z-10 scroll-mt-20 bg-[rgba(13,13,13,0.45)] py-24 px-6">
         <div className="mx-auto w-full max-w-5xl">
           <h2 className={sectionTitle}>Technical Skills</h2>
+          <p className="mt-2 text-xs text-[#888] italic">Click any skill to see projects using it</p>
 
           <div className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
             {skillGroups.map((group) => (
@@ -236,9 +370,14 @@ export default function Page() {
                 </h3>
                 <div className="mt-4 flex flex-wrap gap-2">
                   {group.items.map((s) => (
-                    <span key={s} className={skillChip}>
+                    <button
+                      key={s}
+                      onClick={() => handleSkillClick(s)}
+                      className={`${skillChip} cursor-pointer hover:scale-105 active:scale-95`}
+                      title={`View projects using ${s}`}
+                    >
                       {s}
-                    </span>
+                    </button>
                   ))}
                 </div>
               </div>
@@ -251,33 +390,107 @@ export default function Page() {
         <div className="mx-auto w-full max-w-5xl">
           <h2 className={sectionTitle}>Featured Projects</h2>
           <p className="mt-2 text-[#999]">Featured projects and selected work.</p>
+          {highlightedSkill && (
+            <div className="mt-4 inline-flex items-center gap-2 rounded-full border border-cyan-400/30 bg-cyan-500/10 px-4 py-2 text-sm">
+              <span className="text-cyan-300">Showing projects using:</span>
+              <span className="font-semibold text-cyan-400">{highlightedSkill}</span>
+              <button
+                onClick={() => setHighlightedSkill(null)}
+                className="ml-2 text-cyan-400 hover:text-cyan-300"
+                aria-label="Clear filter"
+              >
+                ✕
+              </button>
+            </div>
+          )}
 
           <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
-            {featuredProjects.map((p) => (
-              <div key={p.title} className={`flex h-full flex-col p-6 ${surfaceCard}`}>
-                <h3 className="border-b border-white/[0.06] pb-3 text-base font-bold leading-snug text-[#22d3ee]">
-                  {p.title}
-                </h3>
-                <p className="mt-4 text-sm leading-relaxed text-[#b8b8b8]">{p.desc}</p>
-                <div className="mt-4 flex flex-wrap gap-2">
-                  {p.tech.map((t) => (
-                    <span key={t} className={skillChip}>
-                      {t}
-                    </span>
-                  ))}
+            {featuredProjects.map((p) => {
+              const isHighlighted = projectUsesSkill(p)
+              const isFiltered = highlightedSkill && !isHighlighted
+              
+              return (
+                <div 
+                  key={p.title} 
+                  className={`flex h-full flex-col p-6 ${surfaceCard} ${
+                    isHighlighted ? 'ring-2 ring-cyan-400 border-cyan-400 scale-[1.02]' : ''
+                  } ${
+                    isFiltered ? 'opacity-30' : ''
+                  }`}
+                >
+                  {/* Project Screenshot */}
+                  {p.screenshot && (
+                    <div className="mb-4 -mx-6 -mt-6 overflow-hidden rounded-t-xl">
+                      <img
+                        src={p.screenshot}
+                        alt={`${p.title} screenshot`}
+                        className="w-full h-48 object-cover object-top transition hover:scale-105"
+                      />
+                    </div>
+                  )}
+                  
+                  <div className="flex items-start justify-between gap-2 border-b border-white/[0.06] pb-3">
+                    <h3 className="text-base font-bold leading-snug text-[#22d3ee]">
+                      {p.title}
+                    </h3>
+                    {p.date && (
+                      <span className="shrink-0 text-xs font-medium text-[#888]">{p.date}</span>
+                    )}
+                  </div>
+                  <p className="mt-4 text-sm leading-relaxed text-[#b8b8b8]">{p.desc}</p>
+                  
+                  {p.metrics && p.metrics.length > 0 && (
+                    <div className="mt-3 space-y-1">
+                      {p.metrics.map((metric) => (
+                        <div key={metric} className="flex items-center gap-2 text-xs text-[#888]">
+                          <span className="text-cyan-400">✓</span>
+                          <span>{metric}</span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  <div className="mt-4 flex flex-wrap gap-2">
+                    {p.tech.map((t) => (
+                      <span 
+                        key={t} 
+                        className={`${skillChip} ${
+                          highlightedSkill && (
+                            t.toLowerCase().includes(highlightedSkill.toLowerCase()) ||
+                            highlightedSkill.toLowerCase().includes(t.toLowerCase())
+                          ) ? 'ring-1 ring-cyan-400 bg-cyan-500/20' : ''
+                        }`}
+                      >
+                        {t}
+                      </span>
+                    ))}
+                  </div>
+                  
+                  <div className="mt-5 flex flex-wrap gap-2">
+                    {p.liveUrl && (
+                      <a
+                        href={p.liveUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="neuron-spark-hover inline-block rounded-md bg-[#22d3ee] px-3 py-2 text-xs font-semibold text-black shadow-sm transition hover:bg-cyan-300"
+                      >
+                        Live Demo →
+                      </a>
+                    )}
+                    {p.github && !p.liveUrl && (
+                      <a
+                        href={p.github}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="neuron-spark-hover inline-block rounded-md bg-[#22d3ee] px-3 py-2 text-xs font-semibold text-black shadow-sm transition hover:bg-cyan-300"
+                      >
+                        View on GitHub →
+                      </a>
+                    )}
+                  </div>
                 </div>
-                {p.github && (
-                  <a
-                    href={p.github}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="neuron-spark-hover mt-5 inline-block rounded-md bg-[#22d3ee] px-3 py-2 text-xs font-semibold text-black shadow-sm transition hover:bg-cyan-300"
-                  >
-                    View on GitHub →
-                  </a>
-                )}
-              </div>
-            ))}
+              )
+            })}
           </div>
 
         </div>
@@ -286,6 +499,7 @@ export default function Page() {
       <section id="experience" className="relative z-10 scroll-mt-20 py-24 px-6">
         <div className="mx-auto w-full max-w-5xl">
           <h2 className={sectionTitle}>Experience</h2>
+          <p className="mt-2 text-xs text-[#888] italic">Click any item to view full details</p>
           <div className="mt-8 space-y-8">
             {experience.map((e,i)=> (
               <div key={i} className="flex cursor-pointer gap-6 group" onClick={() => setExpandedExp(expandedExp === i ? null : i)}>
@@ -296,9 +510,22 @@ export default function Page() {
                 <div className={`flex-1 p-5 ${surfaceCard}`}>
                   <div className="border-b border-white/[0.06] pb-3">
                     <div className="flex flex-wrap items-start justify-between gap-2">
-                      <h4 className="text-sm font-bold leading-snug text-[#22d3ee] transition group-hover:text-cyan-300">
-                        {e.role}
-                      </h4>
+                      <div className="flex items-center gap-2 flex-1">
+                        <h4 className="text-sm font-bold leading-snug text-[#22d3ee] transition group-hover:text-cyan-300">
+                          {e.role}
+                        </h4>
+                        {e.details && e.details.length > 0 && (
+                          <svg 
+                            className={`h-4 w-4 text-cyan-400 transition-transform duration-200 ${expandedExp === i ? 'rotate-180' : ''}`}
+                            fill="none" 
+                            viewBox="0 0 24 24" 
+                            stroke="currentColor" 
+                            strokeWidth="2"
+                          >
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                          </svg>
+                        )}
+                      </div>
                       <span className="shrink-0 text-xs font-medium uppercase tracking-wider text-[#888]">{e.date}</span>
                     </div>
                   </div>
@@ -359,16 +586,24 @@ export default function Page() {
       </section>
 
       <section id="contact" className="relative z-10 scroll-mt-20 py-24 px-6">
-        <div className="mx-auto w-full max-w-5xl text-center">
-          <h2 className={sectionTitle}>Get In Touch</h2>
-          <p className="mx-auto mt-2 max-w-2xl text-sm leading-relaxed text-[#a8a8a8]">
+        <div className="mx-auto w-full max-w-5xl">
+          <h2 className={`${sectionTitle} text-center`}>Get In Touch</h2>
+          <p className="mx-auto mt-2 max-w-2xl text-center text-sm leading-relaxed text-[#a8a8a8]">
             I believe the best products come from bold ideas and strong collaboration. If you're ready to build something that matters, I'm ready to help make it real.
           </p>
-          <div className="mt-6 flex flex-wrap items-center justify-center gap-4">
-            <a href="mailto:michaelrchavez@sbcglobal.net" className={navLinkBtn}>Email</a>
-            <a href="tel:+13612055119" className={navLinkBtn}>Phone</a>
-            <a href="https://linkedin.com/in/michaelrchavez31/" target="_blank" rel="noreferrer" className={navLinkBtn}>LinkedIn</a>
-            <a href="https://github.com/Mchavez31" target="_blank" rel="noreferrer" className={navLinkBtn}>GitHub</a>
+
+          <div className="mt-12">
+            <ContactForm />
+          </div>
+
+          <div className="mt-12 border-t border-white/[0.06] pt-8">
+            <p className="text-center text-sm text-[#888] mb-4">Or reach out directly:</p>
+            <div className="flex flex-wrap items-center justify-center gap-4">
+              <a href="mailto:michaelrchavez@sbcglobal.net" className={navLinkBtn}>Email</a>
+              <a href="tel:+13612055119" className={navLinkBtn}>Phone</a>
+              <a href="https://linkedin.com/in/michaelrchavez31/" target="_blank" rel="noreferrer" className={navLinkBtn}>LinkedIn</a>
+              <a href="https://github.com/Mchavez31" target="_blank" rel="noreferrer" className={navLinkBtn}>GitHub</a>
+            </div>
           </div>
         </div>
       </section>
