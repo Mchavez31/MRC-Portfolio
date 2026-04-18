@@ -1,5 +1,6 @@
 "use client"
 import React, { useEffect, useRef, useState } from 'react'
+import Image from 'next/image'
 import NeuralNetworkCanvas from '@/app/components/NeuralNetworkCanvas'
 import ContactForm from '@/app/components/ContactForm'
 import GitHubStats from '@/app/components/GitHubStats'
@@ -421,10 +422,13 @@ export default function Page() {
                   {/* Project Screenshot */}
                   {p.screenshot && (
                     <div className="mb-4 -mx-6 -mt-6 overflow-hidden rounded-t-xl">
-                      <img
+                      <Image
                         src={p.screenshot}
                         alt={`${p.title} screenshot`}
+                        width={600}
+                        height={400}
                         className="w-full h-48 object-cover object-top transition hover:scale-105"
+                        priority={false}
                       />
                     </div>
                   )}

@@ -2,6 +2,7 @@ import { DM_Sans, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import BootIntro from "@/app/components/BootIntro";
 import CustomCursor from "@/app/components/CustomCursor";
+import GoogleAnalytics from "@/app/components/GoogleAnalytics";
 
 const dmSans = DM_Sans({
   variable: "--font-dm-sans",
@@ -56,6 +57,7 @@ export default function RootLayout({ children }) {
       className={`${dmSans.variable} ${spaceGrotesk.variable} h-full antialiased`}
     >
       <body className={`${dmSans.className} min-h-full flex flex-col`}>
+        <GoogleAnalytics measurementId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID} />
         <BootIntro />
         <CustomCursor />
         {children}
