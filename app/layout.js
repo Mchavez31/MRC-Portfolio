@@ -55,6 +55,7 @@ export default function RootLayout({ children }) {
     <html
       lang="en"
       className={`${dmSans.variable} ${spaceGrotesk.variable} h-full antialiased`}
+      style={{ background: 'black' }}
     >
       <body className={`${dmSans.className} min-h-full flex flex-col`}>
         <GoogleAnalytics measurementId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID} />

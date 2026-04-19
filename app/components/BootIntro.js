@@ -10,11 +10,9 @@ export default function BootIntro() {
   const [linesVisible, setLinesVisible] = useState(false)
   const [flashVisible, setFlashVisible] = useState(false)
   const [textOpacity, setTextOpacity] = useState(0)
-  const [mounted, setMounted] = useState(false)
   const [done, setDone] = useState(false)
 
   useEffect(() => {
-    setMounted(true)
 
     if (pathname === '/resume') {
       // Quick smooth fade for resume page (no flicker)
@@ -58,7 +56,7 @@ export default function BootIntro() {
 
   }, [pathname])
 
-  if (!mounted || done) return null
+  if (done) return null
 
   return (
     <div
