@@ -93,18 +93,16 @@ export default function Page() {
     setHighlightedSkill(skillName)
     
     // Check if any "Currently Building" items use this skill
-    const hasBuildingMatch = currentlyBuilding.some(item => 
-      item.usedSkills?.some(skill => 
-        skill.toLowerCase().includes(skillName.toLowerCase()) ||
-        skillName.toLowerCase().includes(skill.toLowerCase())
+    const hasBuildingMatch = currentlyBuilding.some(item =>
+      item.usedSkills?.some(skill =>
+        skill.toLowerCase() === skillName.toLowerCase()
       )
     )
-    
+
     // Check if any projects use this skill
-    const hasProjectMatch = featuredProjects.some(project => 
-      project.usedSkills?.some(skill => 
-        skill.toLowerCase().includes(skillName.toLowerCase()) ||
-        skillName.toLowerCase().includes(skill.toLowerCase())
+    const hasProjectMatch = featuredProjects.some(project =>
+      project.usedSkills?.some(skill =>
+        skill.toLowerCase() === skillName.toLowerCase()
       )
     )
     
@@ -130,18 +128,16 @@ export default function Page() {
   // Check if a project uses the highlighted skill
   const projectUsesSkill = (project) => {
     if (!highlightedSkill) return false
-    return project.usedSkills?.some(skill => 
-      skill.toLowerCase().includes(highlightedSkill.toLowerCase()) ||
-      highlightedSkill.toLowerCase().includes(skill.toLowerCase())
+    return project.usedSkills?.some(skill =>
+      skill.toLowerCase() === highlightedSkill.toLowerCase()
     )
   }
 
   // Check if a "Currently Building" item uses the highlighted skill
   const currentlyBuildingUsesSkill = (item) => {
     if (!highlightedSkill) return false
-    return item.usedSkills?.some(skill => 
-      skill.toLowerCase().includes(highlightedSkill.toLowerCase()) ||
-      highlightedSkill.toLowerCase().includes(skill.toLowerCase())
+    return item.usedSkills?.some(skill =>
+      skill.toLowerCase() === highlightedSkill.toLowerCase()
     )
   }
 
@@ -327,13 +323,11 @@ export default function Page() {
                   {item.usedSkills && item.usedSkills.length > 0 && (
                     <div className="mt-4 flex flex-wrap gap-2">
                       {item.usedSkills.map((skill) => (
-                        <span 
-                          key={skill} 
+                        <span
+                          key={skill}
                           className={`${skillChip} text-xs ${
-                            highlightedSkill && (
-                              skill.toLowerCase().includes(highlightedSkill.toLowerCase()) ||
-                              highlightedSkill.toLowerCase().includes(skill.toLowerCase())
-                            ) ? 'ring-1 ring-cyan-400 bg-cyan-500/20' : ''
+                            highlightedSkill && skill.toLowerCase() === highlightedSkill.toLowerCase()
+                              ? 'ring-1 ring-cyan-400 bg-cyan-500/20' : ''
                           }`}
                         >
                           {skill}
@@ -476,10 +470,8 @@ export default function Page() {
                       <span 
                         key={t} 
                         className={`${skillChip} ${
-                          highlightedSkill && (
-                            t.toLowerCase().includes(highlightedSkill.toLowerCase()) ||
-                            highlightedSkill.toLowerCase().includes(t.toLowerCase())
-                          ) ? 'ring-1 ring-cyan-400 bg-cyan-500/20' : ''
+                          highlightedSkill && t.toLowerCase() === highlightedSkill.toLowerCase()
+                            ? 'ring-1 ring-cyan-400 bg-cyan-500/20' : ''
                         }`}
                       >
                         {t}
