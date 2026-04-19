@@ -17,23 +17,13 @@ export default function BootIntro() {
     setMounted(true)
 
     if (pathname === '/resume') {
-      // SHORT FLICKER ONLY for resume page
-      const steps = [
-        [0,    () => setOverlayOpacity(1)],
-        [100,  () => setOverlayOpacity(0.70)],
-        [165,  () => setOverlayOpacity(1)],
-        [230,  () => setOverlayOpacity(0.40)],
-        [295,  () => setOverlayOpacity(1)],
-        [360,  () => setOverlayOpacity(0.12)],
-        [425,  () => setOverlayOpacity(1)],
-        [490,  () => setOverlayOpacity(0)],
-        [1050, () => setDone(true)],
-      ]
-      steps.forEach(([t, fn]) => setTimeout(fn, t))
+      // Quick smooth fade for resume page (no flicker)
+      setTimeout(() => setOverlayOpacity(0), 200)
+      setTimeout(() => setDone(true), 1000)
       return
     }
 
-    // FULL BOOT for portfolio page '/'
+    // FULL BOOT for portfolio page '/' (NO FLICKER)
     // Step 1: show lines at edges
     setTimeout(() => {
       setLinesVisible(true)
@@ -62,20 +52,9 @@ export default function BootIntro() {
       setTextOpacity(0)
     }, 2100)
 
-    // Step 6: subtle flicker — 3 flickers (70ms between each step)
-    const flickerSteps = [
-      [2300, () => setOverlayOpacity(0.75)],
-      [2370, () => setOverlayOpacity(1)],
-      [2440, () => setOverlayOpacity(0.50)],
-      [2510, () => setOverlayOpacity(1)],
-      [2580, () => setOverlayOpacity(0.25)],
-      [2650, () => setOverlayOpacity(1)],
-    ]
-    flickerSteps.forEach(([t, fn]) => setTimeout(fn, t))
-
-    // Step 7: final smooth reveal
-    setTimeout(() => setOverlayOpacity(0), 2900)
-    setTimeout(() => setDone(true), 3750)
+    // Step 6: smooth fade to content (NO FLICKER)
+    setTimeout(() => setOverlayOpacity(0), 2300)
+    setTimeout(() => setDone(true), 3100)
 
   }, [pathname])
 
