@@ -424,8 +424,11 @@ export default function Page() {
                   {/* Project Screenshot */}
                   {p.screenshot && (
                     <div 
-                      className="mb-4 -mx-6 -mt-6 overflow-hidden rounded-t-xl bg-white/5 cursor-pointer group"
-                      onClick={() => setLightboxImage({ src: p.screenshot, alt: `${p.title} screenshot` })}
+                      className="mb-4 -mx-6 -mt-6 overflow-hidden rounded-t-xl bg-white/5 cursor-pointer group relative"
+                      onClick={() => {
+                        console.log('Clicked image:', p.screenshot, p.title)
+                        setLightboxImage({ src: p.screenshot, alt: `${p.title} screenshot` })
+                      }}
                     >
                       <Image
                         src={p.screenshot}
@@ -439,7 +442,7 @@ export default function Page() {
                         }`}
                         priority={false}
                       />
-                      <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition bg-black/40">
+                      <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition bg-black/40 pointer-events-none">
                         <span className="text-white text-sm font-semibold bg-cyan-500 px-3 py-1 rounded">
                           Click to enlarge
                         </span>
