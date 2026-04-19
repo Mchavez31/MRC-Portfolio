@@ -4,6 +4,7 @@ import Image from 'next/image'
 import NeuralNetworkCanvas from '@/app/components/NeuralNetworkCanvas'
 import ContactForm from '@/app/components/ContactForm'
 import GitHubStats from '@/app/components/GitHubStats'
+import ImageLightbox from '@/app/components/ImageLightbox'
 import Link from 'next/link'
 import {
   RESUME_PDF_PATH,
@@ -30,6 +31,7 @@ export default function Page() {
   const [expandedExp, setExpandedExp] = useState(null);
   const [navMenuOpen, setNavMenuOpen] = useState(false);
   const [highlightedSkill, setHighlightedSkill] = useState(null);
+  const [lightboxImage, setLightboxImage] = useState(null);
   const navMenuRef = useRef(null);
   const sectionTitle =
     'font-display text-2xl font-bold tracking-tight text-white drop-shadow-[0_1px_4px_rgba(0,0,0,0.45)]';
@@ -421,15 +423,27 @@ export default function Page() {
                 >
                   {/* Project Screenshot */}
                   {p.screenshot && (
-                    <div className="mb-4 -mx-6 -mt-6 overflow-hidden rounded-t-xl">
+                    <div 
+                      className="mb-4 -mx-6 -mt-6 overflow-hidden rounded-t-xl bg-white/5 cursor-pointer group"
+                      onClick={() => setLightboxImage({ src: p.screenshot, alt: `${p.title} screenshot` })}
+                    >
                       <Image
                         src={p.screenshot}
                         alt={`${p.title} screenshot`}
                         width={600}
                         height={400}
-                        className="w-full h-48 object-cover object-top transition hover:scale-105"
+                        className={`w-full h-48 transition group-hover:scale-105 ${
+                          p.title.includes('Cybertruck') || p.title.includes('AI Career') 
+                            ? 'object-contain' 
+                            : 'object-cover object-top'
+                        }`}
                         priority={false}
                       />
+                      <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition bg-black/40">
+                        <span className="text-white text-sm font-semibold bg-cyan-500 px-3 py-1 rounded">
+                          Click to enlarge
+                        </span>
+                      </div>
                     </div>
                   )}
                   
@@ -618,6 +632,15 @@ export default function Page() {
           Software Engineer • AI Developer • Commissioning Engineer
         </p>
       </footer>
+
+      {/* Image Lightbox */}
+      {lightboxImage && (
+        <ImageLightbox
+          src={lightboxImage.src}
+          alt={lightboxImage.alt}
+          onClose={() => setLightboxImage(null)}
+        />
+      )}
     </main>
   )
 }
